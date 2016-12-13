@@ -59,7 +59,7 @@ public:
 // default constructors
   Vector(const Precision v0,
   		 const Precision v1):
-  		 values({v0, v1})
+  		 values{v0, v1}
   {
   	STATIC_ASSERT(Size==2, "Wrong number of arguments");
   }
@@ -67,7 +67,7 @@ public:
   Vector(const Precision v0,
   		 const Precision v1,
   		 const Precision v2):
-  		 values({v0, v1, v2})
+  		 values{v0, v1, v2}
   {
   	STATIC_ASSERT(Size==3, "Wrong number of arguments");
   }
@@ -76,7 +76,7 @@ public:
   		 const Precision v1,
   		 const Precision v2,
   		 const Precision v3):
-  		 values({v0, v1, v2, v3})
+  		 values{v0, v1, v2, v3}
   {
   	STATIC_ASSERT(Size==4, "Wrong number of arguments");
   }
