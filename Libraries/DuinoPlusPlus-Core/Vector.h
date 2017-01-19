@@ -102,6 +102,17 @@ public:
   };
   void println() const {print();Serial.println();};
   void println(const String &separator) const {print(separator);Serial.println();};
+
+  String toString(const String& separator) const {
+    String returnString;
+    for(size_t i=0; i<Size; i++)
+    {
+      returnString += String(values[i]);
+      if((i+1)<Size)
+        returnString += separator;
+    }
+    return returnString;
+  };
   
   // operations
   Vector<Size, Precision>& constrainIn(Precision minVal, Precision maxVal)
