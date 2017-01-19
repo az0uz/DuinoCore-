@@ -103,11 +103,15 @@ public:
   void println() const {print();Serial.println();};
   void println(const String &separator) const {print(separator);Serial.println();};
 
-  String toString(const String& separator) const {
+  String toString(const String& separator, unsigned char stringOption = 0x7F) const {
     String returnString;
     for(size_t i=0; i<Size; i++)
     {
-      returnString += String(values[i]);
+      if(stringOption == 0x7F) {
+        returnString += String(values[i]);
+      } else {
+        returnString += String(values[i], stringOption);
+      }
       if((i+1)<Size)
         returnString += separator;
     }
