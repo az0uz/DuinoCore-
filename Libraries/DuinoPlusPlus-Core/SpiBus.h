@@ -43,36 +43,37 @@
 #ifndef SPI_LEADING_SETUP
   #define SPI_LEADING_SETUP 1
 #endif
-   
-class SpiBus : public Bus
+
+class SpiBus: public Bus
 {
 public:
   SpiBus(volatile uint8_t *newCsPort,
-         uint8_t newCsPin);
+         uint8_t newCsPin,
+         bool newInvertRW = false);
   void begin();
   bool isConnected();
   bool cmd(uint8_t cmd);
   bool write(uint8_t reg, uint8_t val);
   uint8_t read(uint8_t reg);
-  bool write(uint8_t reg, uint8_t *buffer, uint8_t len);
-  bool read(uint8_t reg, uint8_t *buffer, uint8_t len);
-  bool cmdRead(uint8_t cmd, uint8_t *buffer, uint8_t len);
-  
+  bool write(uint8_t reg, uint8_t *buffer, size_t len);
+  bool read(uint8_t reg, uint8_t *buffer, size_t len);
+  bool cmdRead(uint8_t cmd, uint8_t *buffer, size_t len);
+  void select();
+  void unselect();
+  bool exchangeByte(uint8_t *val);
+
 private:
   void init();
   void printError(const String errorStr);
   bool waitTimeout();
   bool csConfigure();
   bool checkCs();
-  bool exchangeByte(uint8_t *val);
-  void select();
-  void unselect();
 
   volatile uint8_t* const csPort;
   volatile uint8_t* const csDdr;
   const uint8_t csPin;
   bool csValide;
+  bool invertRW;
 };
 
 #endif //__SPIBUS_H__
-

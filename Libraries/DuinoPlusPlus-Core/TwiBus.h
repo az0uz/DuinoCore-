@@ -39,7 +39,7 @@
   #define TWI_TIMEOUT_US 1000UL
 #endif
 
-class TwiBus : public Bus
+class TwiBus: public Bus
 {
 public:
   TwiBus();
@@ -51,14 +51,13 @@ public:
   bool cmd(uint8_t cmd);
   bool write(uint8_t reg, uint8_t val);
   uint8_t read(uint8_t reg);
-  bool write(uint8_t reg, uint8_t *buffer, uint8_t len);
-  bool read(uint8_t reg, uint8_t *buffer, uint8_t len);
-  bool cmdRead(uint8_t cmd, uint8_t *buffer, uint8_t len);
-  
+  bool write(uint8_t reg, uint8_t *buffer, size_t len);
+  bool read(uint8_t reg, uint8_t *buffer, size_t len);
+  bool cmdRead(uint8_t cmd, uint8_t *buffer, size_t len);
+
 private:
   uint8_t address;
 };
 
 
 #endif //__TWIBUS_H__
-

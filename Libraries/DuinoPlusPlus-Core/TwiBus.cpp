@@ -34,9 +34,9 @@ static uint8_t twiSlaveAddress;
 static twiRW_t twiRW;
 static uint8_t twiSlaveReg;
 static uint8_t *twiBuf;
-static uint8_t twiBufIndex;
-static uint8_t twiWriteSize;
-static uint8_t twiReadSize;
+static size_t twiBufIndex;
+static size_t twiWriteSize;
+static size_t twiReadSize;
 static void twiInit();
 static void twiStart();
 static bool twiWaitTimeout();
@@ -59,7 +59,7 @@ void TwiBus::begin()
 bool TwiBus::isConnected()
 {
   uint8_t temp;
-  
+
   twiSlaveAddress = address;
   twiRW = READ;
   twiSlaveReg = 0;
@@ -68,13 +68,13 @@ bool TwiBus::isConnected()
   twiReadSize = 1;
 
   twiStart();
-  
+
   return twiWaitTimeout();
 }
 
 //void TwiBus::Scan()
 //{
-//  
+//
 //}
 
 void TwiBus::setAddress(uint8_t newAddress)
@@ -94,7 +94,7 @@ bool TwiBus::cmd(uint8_t cmd){
   return twiWaitTimeout();
 }
 
-bool TwiBus::write(uint8_t reg, uint8_t *buffer, uint8_t len){
+bool TwiBus::write(uint8_t reg, uint8_t *buffer, size_t len){
 
   twiSlaveAddress = address;
   twiRW = WRITE;
@@ -113,20 +113,20 @@ bool TwiBus::write(uint8_t reg, uint8_t val)
   return write(reg, &val, 1);
 }
 
-bool TwiBus::read(uint8_t reg, uint8_t *buffer, uint8_t len){
+bool TwiBus::read(uint8_t reg, uint8_t *buffer, size_t len){
   twiSlaveAddress = address;
   twiRW = READ;
   twiSlaveReg = reg;
   twiBuf = buffer;
   twiBufIndex = 0;
   twiReadSize = len;
-    
+
   twiStart();
-    
+
   return twiWaitTimeout();
 }
 
-bool TwiBus::cmdRead(uint8_t cmd, uint8_t *buffer, uint8_t len){
+bool TwiBus::cmdRead(uint8_t cmd, uint8_t *buffer, size_t len){
   return read(cmd, buffer, len);
 }
 
@@ -151,22 +151,22 @@ uint8_t TwiBus::read(uint8_t reg)
 enum twiStatus_t
 {
  TWSR_STOP = 0x00,
-  
+
  TWSR_START = 0x08,
  TWSR_REP_START = 0x10,
  TWSR_ARB_LOST = 0x38,
- 
+
  TWSR_MT_SLA_ACK = 0x18,
  TWSR_MT_SLA_NACK = 0x20,
  TWSR_MT_DATA_ACK = 0x28,
  TWSR_MT_DATA_NACK = 0x30,
- 
+
 
  TWSR_MR_SLA_ACK = 0x40,
  TWSR_MR_SLA_NACK = 0x48,
  TWSR_MR_DATA_ACK = 0x50,
  TWSR_MR_DATA_NACK = 0x58,
- 
+
  TWSR_ERROR = 0xFF
 };
 
@@ -227,7 +227,7 @@ static bool twiWaitTimeout()
 //  TWI_ERR_TXRX_NACK,
 //  TWI_ERR_ARB_LOST,
 //  TWI_ERR_OTHER
-//} 
+//}
 //;
 
 static void twiError(twiStatus_t twiStatusGiven, twiStatus_t twiStatusExpected)
@@ -243,7 +243,7 @@ static void twiError(twiStatus_t twiStatusGiven, twiStatus_t twiStatusExpected)
   //  }
   twiStop();
   twiWaitForStatus = TWSR_ERROR;
-  
+
   Serial.print("error:twi:");
   Serial.print(int(twiStatusGiven),HEX);
   Serial.write(',');
@@ -267,7 +267,7 @@ static inline void twiSendData(uint8_t data)
 static inline void twiReadDataWithRepeat(bool repeat)
 {
   twiWaitForStatus = repeat?TWSR_MR_DATA_ACK:TWSR_MR_DATA_NACK;
-  TWCR = (1<<TWINT)|(repeat<<TWEA)|(1<<TWEN)|(1<<TWIE); 
+  TWCR = (1<<TWINT)|(repeat<<TWEA)|(1<<TWEN)|(1<<TWIE);
 }
 
 ISR(TWI_vect)
@@ -279,7 +279,7 @@ ISR(TWI_vect)
     twiError(twiStatus, twiWaitForStatus);
     return;
   }
-  
+
   switch(twiStatus)
   {
     // OFF
@@ -341,8 +341,3 @@ ISR(TWI_vect)
     break;
   }
 }
-
-
-
-
-

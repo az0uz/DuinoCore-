@@ -35,10 +35,10 @@ public:
   virtual bool cmd(uint8_t cmd) = 0;
   virtual bool write(uint8_t reg, uint8_t val) = 0;
   virtual uint8_t read(uint8_t reg) = 0;
-  virtual bool write(uint8_t reg, uint8_t *buffer, uint8_t len) = 0;
-  virtual bool read(uint8_t reg, uint8_t *buffer, uint8_t len) = 0;
-  virtual bool cmdRead(uint8_t cmd, uint8_t *buffer, uint8_t len) = 0;
-  
+  virtual bool write(uint8_t reg, uint8_t *buffer, size_t len) = 0;
+  virtual bool read(uint8_t reg, uint8_t *buffer, size_t len) = 0;
+  virtual bool cmdRead(uint8_t cmd, uint8_t *buffer, size_t len) = 0;
+
 protected:
   //~Bus();
 };
@@ -47,4 +47,3 @@ protected:
 #include "TwiBus.h"
 
 #endif //__BUS_H__
-
