@@ -34,10 +34,10 @@ template<size_t Size, typename Precision=float> class Vector
 public:
   // data
   Precision values[Size];
-  
+
   // constructors
   Vector() {
-  	memset(values, 0, sizeof(Precision)*Size); //memset only works with '0'
+        memset(values, 0, sizeof(Precision)*Size); //memset only works with '0'
   };
 
   // Vector static_cast
@@ -48,7 +48,7 @@ public:
       values[i] = (Precision)(vector_right.values[i]);
     }
   };
-  
+
 
   Vector(const Precision defaultValue)
   {
@@ -58,27 +58,27 @@ public:
 
 // default constructors
   Vector(const Precision v0,
-  		 const Precision v1):
-  		 values{v0, v1}
+                 const Precision v1):
+                 values{v0, v1}
   {
-  	STATIC_ASSERT(Size==2, "Wrong number of arguments");
+        STATIC_ASSERT(Size==2, "Wrong number of arguments");
   }
-  
+
   Vector(const Precision v0,
-  		 const Precision v1,
-  		 const Precision v2):
-  		 values{v0, v1, v2}
+                 const Precision v1,
+                 const Precision v2):
+                 values{v0, v1, v2}
   {
-  	STATIC_ASSERT(Size==3, "Wrong number of arguments");
+        STATIC_ASSERT(Size==3, "Wrong number of arguments");
   }
-  
+
   Vector(const Precision v0,
-  		 const Precision v1,
-  		 const Precision v2,
-  		 const Precision v3):
-  		 values{v0, v1, v2, v3}
+                 const Precision v1,
+                 const Precision v2,
+                 const Precision v3):
+                 values{v0, v1, v2, v3}
   {
-  	STATIC_ASSERT(Size==4, "Wrong number of arguments");
+        STATIC_ASSERT(Size==4, "Wrong number of arguments");
   }
 
   void reset(Precision defaultValue)
@@ -98,7 +98,7 @@ public:
   }
   void print() const
   {
-  	print(F(" \t"));
+        print(F(" \t"));
   };
   void println() const {print();Serial.println();};
   void println(const String &separator) const {print(separator);Serial.println();};
@@ -117,17 +117,17 @@ public:
     }
     return returnString;
   };
-  
+
   // operations
   Vector<Size, Precision>& constrainIn(Precision minVal, Precision maxVal)
   {
-  	for(size_t i=0; i<Size; i++)
-  	{
-  		values[i] = max(min(values[i],maxVal),minVal);
-  	}
-  	return *this;
+        for(size_t i=0; i<Size; i++)
+        {
+                values[i] = max(min(values[i],maxVal),minVal);
+        }
+        return *this;
   }
-  
+
   template<typename T> Vector<Size, Precision>& operator= (const Vector<Size, T>& vector_right)
   {
     for(size_t i=0; i<Size; i++)
@@ -200,13 +200,13 @@ public:
 
     for(size_t i=0;i<3;i++){
       rotatedVector.values[i] = cosphi*values[i];
-      for(int j=0;j<3;j++){
+      for(size_t j=0;j<3;j++){
         rotatedVector.values[i] += (1-cosphi)*rotation.values[i]*rotation.values[j]*values[j];
         if(i!=j)
           rotatedVector.values[i] += (((i+j+(i<j))%2==0)?1:-1)*rotation.values[3-(i+j)]*sinphi*values[j];
       }
     }
-    
+
     *this = rotatedVector;
   }
 
@@ -229,7 +229,7 @@ public:
       values[i] -= right_vector.values[i];
     return *this;
   }
-  
+
   Vector<Size, Precision> operator-() const
   {
     Vector<Size, Precision> newVector;
@@ -237,7 +237,7 @@ public:
       newVector.values[i] = -values[i];
     return newVector;
   }
-  
+
   Precision operator*(const Vector<Size, Precision>& right_vector) const
   {
     Precision finalValue = (Precision)0;
@@ -245,17 +245,17 @@ public:
       finalValue += values[i]*right_vector.values[i];
     return finalValue;
   }
-  
+
   inline Precision& operator[](unsigned int index)
   {
     return values[index];
   }
-  
+
   inline const Precision operator[](unsigned int index) const
   {
     return values[index];
   }
-  
+
 };
 
 template<typename Precision> inline Vector<3, Precision> operator^(const Vector<3, Precision>& left_vector, const Vector<3, Precision>& right_vector)
