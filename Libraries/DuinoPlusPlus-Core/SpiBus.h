@@ -47,6 +47,7 @@
 class SpiBus: public Bus
 {
 public:
+  SpiBus(int arduinoPort);
   SpiBus(volatile uint8_t *newCsPort,
          uint8_t newCsPin,
          bool newInvertRW = false);
@@ -69,9 +70,9 @@ private:
   bool csConfigure();
   bool checkCs();
 
-  volatile uint8_t* const csPort;
-  volatile uint8_t* const csDdr;
-  const uint8_t csPin;
+  volatile uint8_t* csPort;
+  volatile uint8_t* csDdr;
+  uint8_t csPin;
   bool csValide;
   bool invertRW;
 };

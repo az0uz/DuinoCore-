@@ -24,6 +24,27 @@
 
 #include "SpiBus.h"
 
+SpiBus::SpiBus(int arduinoPin) :
+  csPort(0),
+  csDdr(0),
+  csPin(0),
+  csValide(false),
+  invertRW(false)
+  {
+    uint8_t port = digitalPinToPort(arduinoPin);
+    if(port != NOT_A_PIN) {
+      csPort = portOutputRegister(port);
+      csDdr = portModeRegister(port);
+      uint8_t mask = digitalPinToBitMask(arduinoPin);
+      csPin = 0;
+      while(!((mask) & 1)) {
+	mask >>= 1;
+	csPin++;
+      }
+      csValide = true;
+    }
+  }
+
 SpiBus::SpiBus(volatile uint8_t *newCsPort,
   uint8_t newCsPin, bool newInvertRW) :
   csPort(newCsPort),
